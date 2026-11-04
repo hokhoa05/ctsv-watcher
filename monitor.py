@@ -36,7 +36,7 @@ load_env(Path(os.getenv("ENV_FILE", Path(__file__).resolve().with_name(".env")))
 
 SITE_URL = os.getenv("SITE_URL", "https://ctsv.hcmus.edu.vn").rstrip("/")
 STATE_FILE = Path(os.getenv("STATE_FILE", "seen.json"))
-AUTHOR = os.getenv("AUTHOR", "Trương Quốc Tiên")
+AUTHOR = os.getenv("AUTHOR", "").strip()
 COHORT = os.getenv("COHORT", "2023")
 ACADEMIC_YEAR = os.getenv("ACADEMIC_YEAR", "2026-2027")
 PAGE_SIZE = int(os.getenv("PAGE_SIZE", "50"))
@@ -81,7 +81,7 @@ def required_patterns() -> list[str]:
 
 def match_post(post: dict) -> tuple[bool, list[str]]:
     reasons = []
-    if norm(AUTHOR) not in norm(post.get("author") or ""):
+    if AUTHOR and norm(AUTHOR) not in norm(post.get("author") or ""):
         reasons.append(f"tác giả là '{post.get('author')}', không phải '{AUTHOR}'")
     text = norm(f"{post.get('title') or ''}\n{post.get('summary') or ''}\n{html_to_text(post.get('content') or '')}")
     for p in required_patterns():

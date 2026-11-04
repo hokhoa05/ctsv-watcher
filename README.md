@@ -1,7 +1,6 @@
 # CTSV HCMUS watcher
 
-Watches https://ctsv.hcmus.edu.vn/info and notifies you (phone / email) when a new post **by Trương Quốc Tiên**
-contains a sentence like *"Sinh viên khoá 2023 tham gia được tính tích luỹ hoạt động chuyên đề A, đợt sinh hoạt
+Watches https://ctsv.hcmus.edu.vn/info and notifies you (phone / email) when a new post contains a sentence like *"Sinh viên khoá 2023 tham gia được tính tích luỹ hoạt động chuyên đề A, đợt sinh hoạt
 công dân – sinh viên cuối khóa năm học 2026-2027."*
 
 Matching ignores diacritics and case, and accepts spelling variants ("khoá/khóa", "luỹ/lũy") and either "–" or "-".
@@ -26,7 +25,7 @@ The CTSV site is a JavaScript app backed by a JSON API. The script calls it dire
 - `GET /api/news/latest?page=1&limit=50` — latest posts, including `author` and the full HTML `content`
 - `GET /api/news/<slug>` — a single post (used by `--check`)
 
-A post matches when its `author` is `AUTHOR` and its content contains all required phrases.
+A post matches when its content contains all required phrases (and, if `AUTHOR` is set, its `author` matches).
 Seen posts are tracked by ID in `seen.json`.
 
 ## 1. Try it locally
@@ -79,7 +78,7 @@ Notes:
 | Variable | Default | Description |
 |---|---|---|
 | `SITE_URL` | `https://ctsv.hcmus.edu.vn` | Site (API is at `<SITE_URL>/api`) |
-| `AUTHOR` | `Trương Quốc Tiên` | Required author name |
+| `AUTHOR` | *(empty)* | Only match posts by this author, e.g. `Trương Quốc Tiên`; empty = any author |
 | `COHORT` | `2023` | Student cohort |
 | `ACADEMIC_YEAR` | `2026-2027` | Academic year; empty to ignore |
 | `PAGE_SIZE` | `50` | Posts fetched per page (API max is 100) |
