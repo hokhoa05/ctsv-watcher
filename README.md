@@ -73,6 +73,19 @@ Notes:
 - GitHub disables scheduled workflows after 60 days without commits (you get a warning email first) — just re-enable it.
 - If the university blocks foreign IPs, run it on a machine or VPS in Vietnam: `python monitor.py --loop 600`.
 
+## Reliable scheduling
+
+GitHub's `schedule` trigger is best-effort and often delayed or skipped. The workflow keeps a backup schedule
+(`7,37 * * * *`), but the main trigger is an external cron service (e.g. [cron-job.org](https://cron-job.org)) calling the API every 15 minutes:
+
+- URL: `https://api.github.com/repos/<owner>/<repo>/actions/workflows/monitor.yml/dispatches`
+- Method: `POST`
+- Headers: `Authorization: Bearer <token>`, `Accept: application/vnd.github+json`
+- Body: `{"ref":"main"}`
+
+Use a fine-grained personal access token limited to this repository with **Actions: Read and write** only.
+A successful call returns `204 No Content`.
+
 ## Environment variables
 
 | Variable | Default | Description |
